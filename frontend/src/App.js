@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Teams from './pages/Teams';
 import Players from './pages/Players';
 import Matches from './pages/Matches';
+import Statistics from './pages/Statistics';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
@@ -36,6 +37,9 @@ function AppContent() {
               </NavLink>
               <NavLink to="/matches" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
                 📅 Lịch thi đấu
+              </NavLink>
+              <NavLink to="/statistics" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+                📊 Thống kê
               </NavLink>
               {isAdmin() && (
                 <NavLink to="/users" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
@@ -93,6 +97,7 @@ function AppContent() {
           <Route path="/teams" element={<PrivateRoute><Teams /></PrivateRoute>} />
           <Route path="/players" element={<PrivateRoute><Players /></PrivateRoute>} />
           <Route path="/matches" element={<PrivateRoute><Matches /></PrivateRoute>} />
+          <Route path="/statistics" element={<PrivateRoute><Statistics /></PrivateRoute>} />
           <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
           <Route path="/users" element={<PrivateRoute><Users /></PrivateRoute>} />
         </Routes>

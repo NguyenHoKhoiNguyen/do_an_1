@@ -40,65 +40,9 @@ const seedData = async () => {
         password: hashedPassword,
         fullName: 'Người dùng',
         role: 'user'
-      },
-      {
-        username: 'nguyenvana',
-        email: 'nguyenvana@gmail.com',
-        password: hashedPassword,
-        fullName: 'Nguyễn Văn A',
-        role: 'user'
-      },
-      {
-        username: 'tranthib',
-        email: 'tranthib@gmail.com',
-        password: hashedPassword,
-        fullName: 'Trần Thị B',
-        role: 'user'
-      },
-      {
-        username: 'levanc',
-        email: 'levanc@gmail.com',
-        password: hashedPassword,
-        fullName: 'Lê Văn C',
-        role: 'user'
-      },
-      {
-        username: 'phamthid',
-        email: 'phamthid@gmail.com',
-        password: hashedPassword,
-        fullName: 'Phạm Thị D',
-        role: 'user'
-      },
-      {
-        username: 'hoangvane',
-        email: 'hoangvane@gmail.com',
-        password: hashedPassword,
-        fullName: 'Hoàng Văn E',
-        role: 'user'
-      },
-      {
-        username: 'vuthif',
-        email: 'vuthif@gmail.com',
-        password: hashedPassword,
-        fullName: 'Vũ Thị F',
-        role: 'admin'
-      },
-      {
-        username: 'dangvang',
-        email: 'dangvang@gmail.com',
-        password: hashedPassword,
-        fullName: 'Đặng Văn G',
-        role: 'user'
-      },
-      {
-        username: 'dothih',
-        email: 'dothih@gmail.com',
-        password: hashedPassword,
-        fullName: 'Đỗ Thị H',
-        role: 'user'
       }
     ]);
-    console.log('✅ Đã tạo 10 users (password: 123456)');
+    console.log('✅ Đã tạo 2 users (admin/user, password: 123456)');
 
     // Tạo các đội bóng
     const teams = await Team.insertMany([

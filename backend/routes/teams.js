@@ -13,6 +13,31 @@ router.get('/', async (req, res) => {
   }
 });
 
+// SEARCH teams
+router.get('/search', async (req, res) => {
+  try {
+    const { name, city, coach } = req.query;
+    let query = {};
+
+    if (name) {
+      query.name = { $regex: name, $options: 'i' };
+    }
+
+    if (city) {
+      query.city = { $regex: city, $options: 'i' };
+    }
+
+    if (coach) {
+      query.coach = { $regex: coach, $options: 'i' };
+    }
+
+    const teams = await Team.find(query).sort({ name: 1 });
+    res.json(teams);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // GET single team by ID - Không cần đăng nhập
 router.get('/:id', async (req, res) => {
   try {

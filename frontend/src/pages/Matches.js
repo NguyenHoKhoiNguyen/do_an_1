@@ -21,6 +21,11 @@ function Matches() {
     notes: '',
   });
 
+  // Search and filter states
+  const [searchTeam, setSearchTeam] = useState('');
+  const [searchLocation, setSearchLocation] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
+
   const statuses = ['Scheduled', 'Live', 'Finished', 'Cancelled'];
 
   useEffect(() => {
@@ -41,6 +46,30 @@ function Matches() {
       console.error('Error fetching data:', error);
       setLoading(false);
     }
+  };
+
+  const handleSearch = async () => {
+    try {
+      setLoading(true);
+      const params = {};
+      if (searchTeam) params.team = searchTeam;
+      if (searchLocation) params.location = searchLocation;
+      if (filterStatus) params.status = filterStatus;
+
+      const response = await matchesAPI.search(params);
+      setMatches(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error searching matches:', error);
+      setLoading(false);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchTeam('');
+    setSearchLocation('');
+    setFilterStatus('');
+    fetchData();
   };
 
   const handleInputChange = (e) => {
@@ -161,11 +190,61 @@ function Matches() {
       <div className="card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h2>Lịch thi đấu</h2>
-          {isAdmin() && (
-            <button className="btn btn-primary" onClick={openAddModal}>
-              + Thêm trận đấu
+          <div>
+            {isAdmin() && (
+              <button className="btn btn-primary" onClick={openAddModal}>
+                + Thêm trận đấu
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Search and Filter Section */}
+      <div className="card">
+        <h3 style={{ marginBottom: '15px' }}>🔍 Tìm kiếm & Lọc</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px' }}>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Tên đội</label>
+            <input
+              type="text"
+              placeholder="Tìm theo tên đội..."
+              value={searchTeam}
+              onChange={(e) => setSearchTeam(e.target.value)}
+              style={{ width: '100%', padding: '8px', borderRadius: '5px', border: '1px solid #ddd' }}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Địa điểm</label>
+            <input
+              type="text"
+              placeholder="Tìm theo địa điểm..."
+              value={searchLocation}
+              onChange={(e) => setSearchLocation(e.target.value)}
+              style={{ width: '100%', padding: '8px', borderRadius: '5px', border: '1px solid #ddd' }}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Trạng thái</label>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              style={{ width: '100%', padding: '8px', borderRadius: '5px', border: '1px solid #ddd' }}
+            >
+              <option value="">Tất cả</option>
+              {statuses.map(status => (
+                <option key={status} value={status}>{getStatusText(status)}</option>
+              ))}
+            </select>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
+            <button className="btn btn-primary" onClick={handleSearch}>
+              Tìm kiếm
             </button>
-          )}
+            <button className="btn btn-secondary" onClick={handleClearSearch}>
+              Xóa bộ lọc
+            </button>
+          </div>
         </div>
       </div>
 

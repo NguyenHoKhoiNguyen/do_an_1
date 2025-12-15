@@ -31,6 +31,7 @@ export const teamsAPI = {
   update: (id, data) => api.put(`/teams/${id}`, data),
   delete: (id) => api.delete(`/teams/${id}`),
   getStats: (id) => api.get(`/teams/${id}/stats`),
+  search: (params) => api.get('/teams/search', { params }),
 };
 
 // Players API
@@ -42,6 +43,7 @@ export const playersAPI = {
   update: (id, data) => api.put(`/players/${id}`, data),
   delete: (id) => api.delete(`/players/${id}`),
   updateStats: (id, stats) => api.patch(`/players/${id}/stats`, stats),
+  search: (params) => api.get('/players/search', { params }),
 };
 
 // Matches API
@@ -54,6 +56,8 @@ export const matchesAPI = {
   update: (id, data) => api.put(`/matches/${id}`, data),
   updateScore: (id, data) => api.patch(`/matches/${id}/score`, data),
   delete: (id) => api.delete(`/matches/${id}`),
+  search: (params) => api.get('/matches/search', { params }),
+  getStats: (params) => api.get('/matches/stats', { params }),
 };
 
 export default api;

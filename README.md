@@ -38,23 +38,43 @@
 - ✅ CRUD đội bóng (Admin)
 - ✅ Xem danh sách và chi tiết đội
 - ✅ Theo dõi thống kê thắng/thua
+- ✅ **MỚI**: Tìm kiếm theo tên đội, thành phố, HLV
 
 ### 👥 Quản lý Cầu thủ
 - ✅ CRUD cầu thủ (Admin)
 - ✅ Gán cầu thủ vào đội
 - ✅ Quản lý thống kê cá nhân
+- ✅ **MỚI**: Tìm kiếm và lọc theo tên, vị trí, đội
 
 ### 📅 Quản lý Lịch thi đấu
 - ✅ CRUD trận đấu (Admin)
 - ✅ Cập nhật tỷ số real-time
 - ✅ Xem trận sắp diễn ra
 - ✅ Tự động cập nhật thắng/thua
+- ✅ **MỚI**: Tìm kiếm theo đội, địa điểm, trạng thái
+- ✅ **MỚI**: Thống kê theo ngày/tuần/tháng
+
+### 📊 Thống kê & Báo cáo
+- ✅ **MỚI**: Thống kê trận đấu theo thời gian
+- ✅ **MỚI**: Hiển thị số liệu chi tiết (tổng trận, đã lên lịch, live, kết thúc, hủy)
+- ✅ **MỚI**: Giao diện thống kê trực quan với gradient cards
+- ✅ **V2.1**: Trang thống kê riêng biệt với biểu đồ
+- ✅ **V2.1**: Biểu đồ Pie, Bar, Line với Recharts
+- ✅ **V2.1**: Top 5 đội bóng, tỷ lệ thắng, phân bổ cầu thủ
+- ✅ **V2.1**: Bảng xếp hạng chi tiết với icon huy chương
+
+### 🔍 Tìm kiếm Nâng cao
+- ✅ **MỚI**: Tìm kiếm đội bóng theo nhiều tiêu chí
+- ✅ **MỚI**: Tìm kiếm cầu thủ theo vị trí và đội
+- ✅ **MỚI**: Tìm kiếm trận đấu theo đội, địa điểm, trạng thái
+- ✅ **MỚI**: Nút "Xóa bộ lọc" để reset tìm kiếm
 
 ### 🎨 Giao diện
 - ✅ Design hiện đại với gradient & glassmorphism
 - ✅ Responsive trên mọi thiết bị
 - ✅ Dashboard với thống kê trực quan
 - ✅ Smooth animations
+- ✅ **MỚI**: Search bars với UX tốt hơn
 
 ## 📦 Cài đặt
 
@@ -140,12 +160,14 @@ Sau khi chạy `npm run seed`, sử dụng tài khoản sau:
 ### Teams
 - `GET /api/teams` - Danh sách đội
 - `GET /api/teams/:id` - Chi tiết đội
+- `GET /api/teams/search` - **MỚI**: Tìm kiếm đội (query: name, city, coach)
 - `POST /api/teams` - Tạo đội (Admin)
 - `PUT /api/teams/:id` - Sửa đội (Admin)
 - `DELETE /api/teams/:id` - Xóa đội (Admin)
 
 ### Players
 - `GET /api/players` - Danh sách cầu thủ
+- `GET /api/players/search` - **MỚI**: Tìm kiếm cầu thủ (query: name, position, team)
 - `POST /api/players` - Tạo cầu thủ (Admin)
 - `PUT /api/players/:id` - Sửa cầu thủ (Admin)
 - `DELETE /api/players/:id` - Xóa cầu thủ (Admin)
@@ -153,6 +175,8 @@ Sau khi chạy `npm run seed`, sử dụng tài khoản sau:
 ### Matches
 - `GET /api/matches` - Danh sách trận đấu
 - `GET /api/matches/upcoming` - Trận sắp tới
+- `GET /api/matches/search` - **MỚI**: Tìm kiếm trận đấu (query: team, location, status)
+- `GET /api/matches/stats` - **MỚI**: Thống kê trận đấu (query: period, startDate, endDate)
 - `POST /api/matches` - Tạo trận (Admin)
 - `PATCH /api/matches/:id/score` - Cập nhật tỷ số (Admin)
 
@@ -186,12 +210,43 @@ Dự án này giúp nắm vững:
 ## 🚧 Hướng phát triển
 
 - [ ] Upload ảnh cho players/teams
-- [ ] Tìm kiếm và filter nâng cao
+- [x] **Tìm kiếm và filter nâng cao** ✅ (Đã hoàn thành)
+- [x] **Thống kê theo ngày/tuần/tháng** ✅ (Đã hoàn thành)
 - [ ] Real-time updates với Socket.io
 - [ ] Charts và graphs cho thống kê
 - [ ] Export data (PDF, Excel)
 - [ ] Pagination cho danh sách
 - [ ] Unit tests và E2E tests
+
+## 📝 Lịch sử cập nhật
+
+### Version 2.1.0 - 15/12/2025 (Trang Thống kê Nâng cao)
+- ✅ Tạo trang Thống kê riêng biệt với route /statistics
+- ✅ Tích hợp Recharts cho biểu đồ chuyên nghiệp
+- ✅ 4 loại biểu đồ: Pie Chart, Bar Chart, Line Chart
+- ✅ Thống kê Top 5 đội bóng, tỷ lệ thắng, phân bổ cầu thủ
+- ✅ Bảng xếp hạng với icon huy chương 🥇🥈🥉
+- ✅ Summary cards với gradient đẹp mắt
+- ✅ Responsive design cho tất cả biểu đồ
+
+### Version 2.0.0 - 15/12/2025
+- ✅ Thêm tính năng tìm kiếm cho Teams, Players, Matches
+- ✅ Thêm thống kê trận đấu theo ngày/tuần/tháng
+- ✅ Cải thiện UI với search bars và filter dropdowns
+- ✅ Thêm modal thống kê với gradient cards
+- ✅ Responsive design cho tất cả tính năng mới
+
+### Version 1.0.0 - 01/12/2025
+- ✅ Ra mắt phiên bản đầu tiên
+- ✅ CRUD đầy đủ cho Teams, Players, Matches
+- ✅ Authentication với JWT
+- ✅ Role-based authorization
+
+## 📚 Tài liệu bổ sung
+
+- [FEATURE_UPDATE.md](./FEATURE_UPDATE.md) - Chi tiết tính năng mới
+- [TESTING_GUIDE.md](./TESTING_GUIDE.md) - Hướng dẫn test
+- [STATISTICS_PAGE.md](./STATISTICS_PAGE.md) - Trang thống kê với biểu đồ
 
 ## 📄 License
 

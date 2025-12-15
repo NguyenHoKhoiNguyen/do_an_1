@@ -50,6 +50,109 @@ router.get('/past', async (req, res) => {
   }
 });
 
+// GET match statistics by period (day/week/month)
+router.get('/stats', async (req, res) => {
+  try {
+    const { period, startDate, endDate } = req.query;
+    let dateFilter = {};
+    
+    if (startDate && endDate) {
+      dateFilter = {
+        matchDate: {
+          $gte: new Date(startDate),
+          $lte: new Date(endDate)
+        }
+      };
+    } else if (period) {
+      const now = new Date();
+      const start = new Date();
+      
+      switch (period) {
+        case 'day':
+          start.setHours(0, 0, 0, 0);
+          break;
+        case 'week':
+          start.setDate(now.getDate() - now.getDay());
+          start.setHours(0, 0, 0, 0);
+          break;
+        case 'month':
+          start.setDate(1);
+          start.setHours(0, 0, 0, 0);
+          break;
+        default:
+          start.setDate(now.getDate() - 7);
+      }
+      
+      dateFilter = {
+        matchDate: {
+          $gte: start,
+          $lte: now
+        }
+      };
+    }
+
+    const matches = await Match.find(dateFilter)
+      .populate('homeTeam', 'name city logo')
+      .populate('awayTeam', 'name city logo')
+      .sort({ matchDate: -1 });
+
+    const stats = {
+      totalMatches: matches.length,
+      scheduled: matches.filter(m => m.status === 'Scheduled').length,
+      live: matches.filter(m => m.status === 'Live').length,
+      finished: matches.filter(m => m.status === 'Finished').length,
+      cancelled: matches.filter(m => m.status === 'Cancelled').length,
+      matches: matches
+    };
+
+    res.json(stats);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// SEARCH matches
+router.get('/search', async (req, res) => {
+  try {
+    const { team, location, status, fromDate, toDate } = req.query;
+    let query = {};
+
+    if (team) {
+      const teams = await Team.find({ 
+        name: { $regex: team, $options: 'i' } 
+      });
+      const teamIds = teams.map(t => t._id);
+      query.$or = [
+        { homeTeam: { $in: teamIds } },
+        { awayTeam: { $in: teamIds } }
+      ];
+    }
+
+    if (location) {
+      query.location = { $regex: location, $options: 'i' };
+    }
+
+    if (status) {
+      query.status = status;
+    }
+
+    if (fromDate || toDate) {
+      query.matchDate = {};
+      if (fromDate) query.matchDate.$gte = new Date(fromDate);
+      if (toDate) query.matchDate.$lte = new Date(toDate);
+    }
+
+    const matches = await Match.find(query)
+      .populate('homeTeam', 'name city logo')
+      .populate('awayTeam', 'name city logo')
+      .sort({ matchDate: -1 });
+
+    res.json(matches);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // GET single match by ID
 router.get('/:id', async (req, res) => {
   try {

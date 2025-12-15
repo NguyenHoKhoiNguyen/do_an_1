@@ -20,6 +20,11 @@ function Players() {
     nationality: 'Vietnam',
   });
 
+  // Search states
+  const [searchName, setSearchName] = useState('');
+  const [filterPosition, setFilterPosition] = useState('');
+  const [filterTeam, setFilterTeam] = useState('');
+
   const positions = ['Point Guard', 'Shooting Guard', 'Small Forward', 'Power Forward', 'Center'];
 
   useEffect(() => {
@@ -40,6 +45,30 @@ function Players() {
       console.error('Error fetching data:', error);
       setLoading(false);
     }
+  };
+
+  const handleSearch = async () => {
+    try {
+      setLoading(true);
+      const params = {};
+      if (searchName) params.name = searchName;
+      if (filterPosition) params.position = filterPosition;
+      if (filterTeam) params.team = filterTeam;
+
+      const response = await playersAPI.search(params);
+      setPlayers(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error searching players:', error);
+      setLoading(false);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchName('');
+    setFilterPosition('');
+    setFilterTeam('');
+    fetchData();
   };
 
   const handleInputChange = (e) => {
@@ -132,6 +161,57 @@ function Players() {
               + Thêm cầu thủ
             </button>
           )}
+        </div>
+      </div>
+
+      {/* Search Section */}
+      <div className="card">
+        <h3 style={{ marginBottom: '15px' }}>🔍 Tìm kiếm & Lọc</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px' }}>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Tên cầu thủ</label>
+            <input
+              type="text"
+              placeholder="Tìm theo tên..."
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+              style={{ width: '100%', padding: '8px', borderRadius: '5px', border: '1px solid #ddd' }}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Vị trí</label>
+            <select
+              value={filterPosition}
+              onChange={(e) => setFilterPosition(e.target.value)}
+              style={{ width: '100%', padding: '8px', borderRadius: '5px', border: '1px solid #ddd' }}
+            >
+              <option value="">Tất cả vị trí</option>
+              {positions.map(pos => (
+                <option key={pos} value={pos}>{pos}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Đội bóng</label>
+            <select
+              value={filterTeam}
+              onChange={(e) => setFilterTeam(e.target.value)}
+              style={{ width: '100%', padding: '8px', borderRadius: '5px', border: '1px solid #ddd' }}
+            >
+              <option value="">Tất cả đội</option>
+              {teams.map(team => (
+                <option key={team._id} value={team._id}>{team.name}</option>
+              ))}
+            </select>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
+            <button className="btn btn-primary" onClick={handleSearch}>
+              Tìm kiếm
+            </button>
+            <button className="btn btn-secondary" onClick={handleClearSearch}>
+              Xóa bộ lọc
+            </button>
+          </div>
         </div>
       </div>
 

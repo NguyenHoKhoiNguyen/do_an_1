@@ -16,6 +16,11 @@ function Teams() {
     description: '',
   });
 
+  // Search states
+  const [searchName, setSearchName] = useState('');
+  const [searchCity, setSearchCity] = useState('');
+  const [searchCoach, setSearchCoach] = useState('');
+
   useEffect(() => {
     fetchTeams();
   }, []);
@@ -30,6 +35,30 @@ function Teams() {
       console.error('Error fetching teams:', error);
       setLoading(false);
     }
+  };
+
+  const handleSearch = async () => {
+    try {
+      setLoading(true);
+      const params = {};
+      if (searchName) params.name = searchName;
+      if (searchCity) params.city = searchCity;
+      if (searchCoach) params.coach = searchCoach;
+
+      const response = await teamsAPI.search(params);
+      setTeams(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error searching teams:', error);
+      setLoading(false);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchName('');
+    setSearchCity('');
+    setSearchCoach('');
+    fetchTeams();
   };
 
   const handleInputChange = (e) => {
@@ -101,6 +130,51 @@ function Teams() {
               + Thêm đội bóng
             </button>
           )}
+        </div>
+      </div>
+
+      {/* Search Section */}
+      <div className="card">
+        <h3 style={{ marginBottom: '15px' }}>🔍 Tìm kiếm</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px' }}>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Tên đội</label>
+            <input
+              type="text"
+              placeholder="Tìm theo tên đội..."
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+              style={{ width: '100%', padding: '8px', borderRadius: '5px', border: '1px solid #ddd' }}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Thành phố</label>
+            <input
+              type="text"
+              placeholder="Tìm theo thành phố..."
+              value={searchCity}
+              onChange={(e) => setSearchCity(e.target.value)}
+              style={{ width: '100%', padding: '8px', borderRadius: '5px', border: '1px solid #ddd' }}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem' }}>Huấn luyện viên</label>
+            <input
+              type="text"
+              placeholder="Tìm theo HLV..."
+              value={searchCoach}
+              onChange={(e) => setSearchCoach(e.target.value)}
+              style={{ width: '100%', padding: '8px', borderRadius: '5px', border: '1px solid #ddd' }}
+            />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
+            <button className="btn btn-primary" onClick={handleSearch}>
+              Tìm kiếm
+            </button>
+            <button className="btn btn-secondary" onClick={handleClearSearch}>
+              Xóa bộ lọc
+            </button>
+          </div>
         </div>
       </div>
 

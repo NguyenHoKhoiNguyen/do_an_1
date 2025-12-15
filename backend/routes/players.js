@@ -13,6 +13,38 @@ router.get('/', async (req, res) => {
   }
 });
 
+// SEARCH players
+router.get('/search', async (req, res) => {
+  try {
+    const { name, position, team, nationality } = req.query;
+    let query = {};
+
+    if (name) {
+      query.name = { $regex: name, $options: 'i' };
+    }
+
+    if (position) {
+      query.position = position;
+    }
+
+    if (team) {
+      query.team = team;
+    }
+
+    if (nationality) {
+      query.nationality = { $regex: nationality, $options: 'i' };
+    }
+
+    const players = await Player.find(query)
+      .populate('team', 'name city')
+      .sort({ name: 1 });
+    
+    res.json(players);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // GET players by team
 router.get('/team/:teamId', async (req, res) => {
   try {
