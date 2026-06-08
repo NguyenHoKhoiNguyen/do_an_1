@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.816ce6d7.css",
+    "main.js": "/static/js/main.029d2951.js",
+    "static/media/basketball-hero.png": "/static/media/basketball-hero.e610f9c121310a7fc230.png",
+    "index.html": "/index.html",
+    "main.816ce6d7.css.map": "/static/css/main.816ce6d7.css.map",
+    "main.029d2951.js.map": "/static/js/main.029d2951.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.816ce6d7.css",
+    "static/js/main.029d2951.js"
+  ]
+}

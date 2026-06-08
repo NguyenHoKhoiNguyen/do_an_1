@@ -8,10 +8,7 @@ const Player = require('./models/Player');
 const Match = require('./models/Match');
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('✅ MongoDB connected'))
 .catch((err) => console.error('❌ MongoDB connection error:', err));
 
@@ -379,15 +376,15 @@ const seedData = async () => {
 
     console.log('✅ Đã tạo 20 cầu thủ');
 
-    // Tạo các trận đấu
+    // Tạo các trận đấu (tháng 5-8 năm 2026)
     const matches = await Match.insertMany([
-      // Trận đấu đã kết thúc
+      // Trận đấu đã kết thúc (tháng 5)
       {
         homeTeam: teams[0]._id,
         awayTeam: teams[1]._id,
         homeScore: 98,
         awayScore: 92,
-        matchDate: new Date('2025-11-15'),
+        matchDate: new Date('2026-05-08'),
         location: 'Nhà thi đấu Phan Đình Phùng, TP.HCM',
         status: 'Finished',
         quarter: 4,
@@ -398,7 +395,7 @@ const seedData = async () => {
         awayTeam: teams[3]._id,
         homeScore: 85,
         awayScore: 78,
-        matchDate: new Date('2025-11-16'),
+        matchDate: new Date('2026-05-10'),
         location: 'Nhà thi đấu Tiên Sơn, Đà Nẵng',
         status: 'Finished',
         quarter: 4,
@@ -409,7 +406,7 @@ const seedData = async () => {
         awayTeam: teams[2]._id,
         homeScore: 102,
         awayScore: 95,
-        matchDate: new Date('2025-11-18'),
+        matchDate: new Date('2026-05-15'),
         location: 'Cung thể thao Trịnh Hoài Đức, Hà Nội',
         status: 'Finished',
         quarter: 4,
@@ -420,31 +417,42 @@ const seedData = async () => {
         awayTeam: teams[3]._id,
         homeScore: 110,
         awayScore: 88,
-        matchDate: new Date('2025-11-19'),
+        matchDate: new Date('2026-05-20'),
         location: 'Nhà thi đấu Phan Đình Phùng, TP.HCM',
         status: 'Finished',
         quarter: 4,
         notes: 'Saigon Heat thống trị hoàn toàn'
       },
-      // Trận đấu đang diễn ra
+      {
+        homeTeam: teams[3]._id,
+        awayTeam: teams[2]._id,
+        homeScore: 92,
+        awayScore: 87,
+        matchDate: new Date('2026-05-22'),
+        location: 'Nhà thi đấu Cần Thơ',
+        status: 'Finished',
+        quarter: 4,
+        notes: 'Trận đấu kịch tính kết thúc với 5 điểm chênh lệch'
+      },
+      // Trận đấu đang diễn ra (hôm nay 8/5/2026)
       {
         homeTeam: teams[1]._id,
         awayTeam: teams[3]._id,
         homeScore: 56,
         awayScore: 52,
-        matchDate: new Date('2025-11-23'),
+        matchDate: new Date('2026-05-08 19:00:00'),
         location: 'Cung thể thao Trịnh Hoài Đức, Hà Nội',
         status: 'Live',
         quarter: 3,
-        notes: 'Trận đấu đang diễn ra sôi nổi'
+        notes: 'Trận đấu đang diễn ra sôi nổi ngay bây giờ'
       },
-      // Trận đấu sắp tới
+      // Trận đấu sắp tới (tháng 5-6)
       {
         homeTeam: teams[2]._id,
         awayTeam: teams[0]._id,
         homeScore: 0,
         awayScore: 0,
-        matchDate: new Date('2025-11-25'),
+        matchDate: new Date('2026-05-25'),
         location: 'Nhà thi đấu Tiên Sơn, Đà Nẵng',
         status: 'Scheduled',
         quarter: 1,
@@ -455,7 +463,7 @@ const seedData = async () => {
         awayTeam: teams[1]._id,
         homeScore: 0,
         awayScore: 0,
-        matchDate: new Date('2025-11-27'),
+        matchDate: new Date('2026-05-28'),
         location: 'Nhà thi đấu Cần Thơ',
         status: 'Scheduled',
         quarter: 1,
@@ -466,7 +474,7 @@ const seedData = async () => {
         awayTeam: teams[2]._id,
         homeScore: 0,
         awayScore: 0,
-        matchDate: new Date('2025-11-30'),
+        matchDate: new Date('2026-06-01'),
         location: 'Nhà thi đấu Phan Đình Phùng, TP.HCM',
         status: 'Scheduled',
         quarter: 1,
@@ -477,32 +485,144 @@ const seedData = async () => {
         awayTeam: teams[0]._id,
         homeScore: 0,
         awayScore: 0,
-        matchDate: new Date('2025-12-02'),
+        matchDate: new Date('2026-06-05'),
         location: 'Cung thể thao Trịnh Hoài Đức, Hà Nội',
         status: 'Scheduled',
         quarter: 1,
-        notes: 'Derby thủ đô - thành phố'
+        notes: 'Derby thủ đô - thành phố lần 2'
       },
       {
         homeTeam: teams[3]._id,
         awayTeam: teams[2]._id,
         homeScore: 0,
         awayScore: 0,
-        matchDate: new Date('2025-12-05'),
+        matchDate: new Date('2026-06-10'),
         location: 'Nhà thi đấu Cần Thơ',
         status: 'Scheduled',
         quarter: 1,
         notes: 'Trận cầu miền Trung - miền Nam'
+      },
+      // Thêm các trận đấu tháng 6-7-8
+      {
+        homeTeam: teams[0]._id,
+        awayTeam: teams[1]._id,
+        homeScore: 0,
+        awayScore: 0,
+        matchDate: new Date('2026-06-15'),
+        location: 'Nhà thi đấu Phan Đình Phùng, TP.HCM',
+        status: 'Scheduled',
+        quarter: 1,
+        notes: 'Trận đấu vòng đầu tiên của tháng 6'
+      },
+      {
+        homeTeam: teams[2]._id,
+        awayTeam: teams[3]._id,
+        homeScore: 0,
+        awayScore: 0,
+        matchDate: new Date('2026-06-20'),
+        location: 'Nhà thi đấu Tiên Sơn, Đà Nẵng',
+        status: 'Scheduled',
+        quarter: 1,
+        notes: 'Dragons vs Catfish - Trận đấu quyết định'
+      },
+      {
+        homeTeam: teams[1]._id,
+        awayTeam: teams[2]._id,
+        homeScore: 0,
+        awayScore: 0,
+        matchDate: new Date('2026-07-01'),
+        location: 'Cung thể thao Trịnh Hoài Đức, Hà Nội',
+        status: 'Scheduled',
+        quarter: 1,
+        notes: 'Trận đấu đầu tiên của tháng 7'
+      },
+      {
+        homeTeam: teams[0]._id,
+        awayTeam: teams[3]._id,
+        homeScore: 0,
+        awayScore: 0,
+        matchDate: new Date('2026-07-10'),
+        location: 'Nhà thi đấu Phan Đình Phùng, TP.HCM',
+        status: 'Scheduled',
+        quarter: 1,
+        notes: 'Heat vs Catfish - Lượt lại'
+      },
+      {
+        homeTeam: teams[2]._id,
+        awayTeam: teams[0]._id,
+        homeScore: 0,
+        awayScore: 0,
+        matchDate: new Date('2026-07-18'),
+        location: 'Nhà thi đấu Tiên Sơn, Đà Nẵng',
+        status: 'Scheduled',
+        quarter: 1,
+        notes: 'Dragons vs Heat - Trận đấu căng thẳng cuối mùa'
+      },
+      {
+        homeTeam: teams[3]._id,
+        awayTeam: teams[1]._id,
+        homeScore: 0,
+        awayScore: 0,
+        matchDate: new Date('2026-07-25'),
+        location: 'Nhà thi đấu Cần Thơ',
+        status: 'Scheduled',
+        quarter: 1,
+        notes: 'Catfish vs Buffaloes - Vòng lặp lại'
+      },
+      {
+        homeTeam: teams[1]._id,
+        awayTeam: teams[0]._id,
+        homeScore: 0,
+        awayScore: 0,
+        matchDate: new Date('2026-08-05'),
+        location: 'Cung thể thao Trịnh Hoài Đức, Hà Nội',
+        status: 'Scheduled',
+        quarter: 1,
+        notes: 'Buffaloes vs Heat - Trận chung kết'
+      },
+      {
+        homeTeam: teams[2]._id,
+        awayTeam: teams[3]._id,
+        homeScore: 0,
+        awayScore: 0,
+        matchDate: new Date('2026-08-12'),
+        location: 'Nhà thi đấu Tiên Sơn, Đà Nẵng',
+        status: 'Scheduled',
+        quarter: 1,
+        notes: 'Dragons vs Catfish - Trận quyết định vị trí thứ 3'
+      },
+      {
+        homeTeam: teams[0]._id,
+        awayTeam: teams[2]._id,
+        homeScore: 0,
+        awayScore: 0,
+        matchDate: new Date('2026-08-20'),
+        location: 'Nhà thi đấu Phan Đình Phùng, TP.HCM',
+        status: 'Scheduled',
+        quarter: 1,
+        notes: 'Heat vs Dragons - Trận playoff tứ kết'
+      },
+      {
+        homeTeam: teams[3]._id,
+        awayTeam: teams[1]._id,
+        homeScore: 0,
+        awayScore: 0,
+        matchDate: new Date('2026-08-25'),
+        location: 'Nhà thi đấu Cần Thơ',
+        status: 'Scheduled',
+        quarter: 1,
+        notes: 'Catfish vs Buffaloes - Trận playoff tứ kết'
       }
     ]);
 
-    console.log('✅ Đã tạo 10 trận đấu');
+    console.log('✅ Đã tạo 20 trận đấu');
     console.log('');
     console.log('🎉 HOÀN THÀNH! Dữ liệu mẫu đã được tạo thành công:');
     console.log('   - 2 users (admin: admin/123456, user: user/123456)');
     console.log('   - 4 đội bóng');
     console.log('   - 20 cầu thủ (5 cầu thủ/đội)');
-    console.log('   - 10 trận đấu (4 đã kết thúc, 1 đang diễn ra, 5 sắp tới)');
+    console.log('   - 20 trận đấu (5 đã kết thúc, 1 đang diễn ra, 14 sắp tới)');
+    console.log('   - Tất cả trận đấu từ tháng 5-8 năm 2026');
     console.log('');
     console.log('💡 Bạn có thể chạy lại script này bất cứ lúc nào với lệnh: node seed.js');
     

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import api from '../services/api';
 
 function Profile() {
   const { user } = useAuth();
@@ -32,15 +32,11 @@ function Profile() {
 
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      await axios.put(
-        'http://localhost:5001/api/auth/change-password',
+      await api.put(
+        '/auth/change-password',
         {
           currentPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` }
         }
       );
       setMessage({ type: 'success', text: 'Đổi mật khẩu thành công!' });

@@ -4,6 +4,35 @@ const Match = require('../models/Match');
 const Team = require('../models/Team');
 const { verifyToken, isAdmin } = require('../middleware/auth');
 
+async function applyFinishedResultToTeams(match, previousStatus) {
+  if (previousStatus === 'Finished' || match.status !== 'Finished') {
+    return;
+  }
+
+  if (match.homeScore === match.awayScore) {
+    return;
+  }
+
+  const [homeTeam, awayTeam] = await Promise.all([
+    Team.findById(match.homeTeam),
+    Team.findById(match.awayTeam)
+  ]);
+
+  if (!homeTeam || !awayTeam) {
+    throw new Error('Unable to update team records because one of the teams was not found');
+  }
+
+  if (match.homeScore > match.awayScore) {
+    homeTeam.wins += 1;
+    awayTeam.losses += 1;
+  } else {
+    awayTeam.wins += 1;
+    homeTeam.losses += 1;
+  }
+
+  await Promise.all([homeTeam.save(), awayTeam.save()]);
+}
+
 // GET all matches - Không cần đăng nhập
 router.get('/', async (req, res) => {
   try {
@@ -201,6 +230,8 @@ router.put('/:id', verifyToken, isAdmin, async (req, res) => {
       return res.status(404).json({ message: 'Match not found' });
     }
 
+    const previousStatus = match.status;
+
     Object.keys(req.body).forEach(key => {
       if (req.body[key] !== undefined) {
         match[key] = req.body[key];
@@ -208,6 +239,8 @@ router.put('/:id', verifyToken, isAdmin, async (req, res) => {
     });
 
     const updatedMatch = await match.save();
+    await applyFinishedResultToTeams(updatedMatch, previousStatus);
+
     const populatedMatch = await Match.findById(updatedMatch._id)
       .populate('homeTeam', 'name city logo')
       .populate('awayTeam', 'name city logo');
@@ -225,29 +258,16 @@ router.patch('/:id/score', verifyToken, isAdmin, async (req, res) => {
       return res.status(404).json({ message: 'Match not found' });
     }
 
+    const previousStatus = match.status;
+
     if (req.body.homeScore !== undefined) match.homeScore = req.body.homeScore;
     if (req.body.awayScore !== undefined) match.awayScore = req.body.awayScore;
     if (req.body.quarter !== undefined) match.quarter = req.body.quarter;
     if (req.body.status !== undefined) match.status = req.body.status;
 
-    // Update team records if match is finished
-    if (req.body.status === 'Finished' && match.status !== 'Finished') {
-      const homeTeam = await Team.findById(match.homeTeam);
-      const awayTeam = await Team.findById(match.awayTeam);
-
-      if (match.homeScore > match.awayScore) {
-        homeTeam.wins += 1;
-        awayTeam.losses += 1;
-      } else if (match.awayScore > match.homeScore) {
-        awayTeam.wins += 1;
-        homeTeam.losses += 1;
-      }
-
-      await homeTeam.save();
-      await awayTeam.save();
-    }
-
     const updatedMatch = await match.save();
+    await applyFinishedResultToTeams(updatedMatch, previousStatus);
+
     const populatedMatch = await Match.findById(updatedMatch._id)
       .populate('homeTeam', 'name city logo wins losses')
       .populate('awayTeam', 'name city logo wins losses');

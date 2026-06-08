@@ -212,11 +212,16 @@ Dự án này giúp nắm vững:
 - [ ] Upload ảnh cho players/teams
 - [x] **Tìm kiếm và filter nâng cao** ✅ (Đã hoàn thành)
 - [x] **Thống kê theo ngày/tuần/tháng** ✅ (Đã hoàn thành)
+- [ ] **Charts & Graphs cho thống kê** 📊
+- [ ] **Export Data (PDF, Excel, CSV)** 📥
+- [ ] **Head-to-Head Analytics** 🎬
+- [ ] **Ranking & Bảng Xếp Hạng Động** ⭐
+- [ ] **News Feed & Bảng tin** 💬
 - [ ] Real-time updates với Socket.io
-- [ ] Charts và graphs cho thống kê
-- [ ] Export data (PDF, Excel)
 - [ ] Pagination cho danh sách
 - [ ] Unit tests và E2E tests
+
+**Chi tiết**: Xem [ROADMAP.md](./ROADMAP.md)
 
 ## 📝 Lịch sử cập nhật
 

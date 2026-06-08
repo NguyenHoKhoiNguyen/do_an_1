@@ -142,11 +142,6 @@ function Players() {
     setShowModal(true);
   };
 
-  const getTeamName = (teamId) => {
-    const team = teams.find(t => t._id === teamId);
-    return team ? team.name : 'N/A';
-  };
-
   if (loading) {
     return <div className="loading">Đang tải dữ liệu...</div>;
   }

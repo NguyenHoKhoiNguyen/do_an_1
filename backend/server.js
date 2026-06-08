@@ -12,35 +12,53 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('✅ MongoDB connected successfully'))
-.catch((err) => console.error('❌ MongoDB connection error:', err));
+const connectDB = () => {
+  if (!process.env.MONGODB_URI) {
+    throw new Error('MONGODB_URI is not configured');
+  }
+
+  return mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log('✅ MongoDB connected successfully'))
+    .catch((err) => {
+      console.error('❌ MongoDB connection error:', err);
+      throw err;
+    });
+};
 
 // Import Routes
 const authRoutes = require('./routes/auth');
 const teamRoutes = require('./routes/teams');
 const playerRoutes = require('./routes/players');
 const matchRoutes = require('./routes/matches');
+const newsRoutes = require('./routes/news');
+const standingsRoutes = require('./routes/standings');
+const exportRoutes = require('./routes/export');
+const aiRoutes = require('./routes/ai');
 
 // Use Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/teams', teamRoutes);
 app.use('/api/players', playerRoutes);
 app.use('/api/matches', matchRoutes);
+app.use('/api/news', newsRoutes);
+app.use('/api/standings', standingsRoutes);
+app.use('/api/export', exportRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Home Route
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Basketball Management API',
-    version: '1.0.0',
+    version: '3.0.0',
     endpoints: {
       auth: '/api/auth',
       teams: '/api/teams',
       players: '/api/players',
-      matches: '/api/matches'
+      matches: '/api/matches',
+      news: '/api/news',
+      standings: '/api/standings',
+      export: '/api/export',
+      ai: '/api/ai'
     }
   });
 });
@@ -54,9 +72,21 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Server
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
-  console.log(`📍 API URL: http://localhost:${PORT}`);
-});
+let server;
+
+// Start Server
+if (require.main === module) {
+  connectDB()
+    .then(() => {
+      server = app.listen(PORT, () => {
+        console.log(`🚀 Server is running on port ${PORT}`);
+        console.log(`📍 API URL: http://localhost:${PORT}`);
+      });
+    })
+    .catch(() => {
+      process.exit(1);
+    });
+}
+
+module.exports = { app, server, connectDB };

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { teamsAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 function Teams() {
   const { isAdmin } = useAuth();
+  const navigate = useNavigate();
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -192,8 +194,13 @@ function Teams() {
               <p><strong>Thành lập:</strong> {team.founded}</p>
               <p><strong>Thắng/Thua:</strong> {team.wins} - {team.losses}</p>
               {team.description && <p style={{ marginTop: '10px', fontSize: '0.9rem', color: '#7f8c8d' }}>{team.description}</p>}
+              <div style={{ marginTop: '15px' }}>
+                <button className="btn btn-primary" onClick={() => navigate(`/formation/${team._id}`)}>
+                  🏀 Xem đội hình
+                </button>
+              </div>
               {isAdmin() && (
-                <div style={{ marginTop: '15px' }}>
+                <div style={{ marginTop: '10px' }}>
                   <button className="btn btn-primary" onClick={() => handleEdit(team)}>
                     Sửa
                   </button>

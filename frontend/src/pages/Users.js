@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 
 function Users() {
   const { isAdmin, user: currentUser } = useAuth();
@@ -20,10 +20,7 @@ function Users() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5001/api/auth/users', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/auth/users');
       setUsers(response.data);
       setLoading(false);
     } catch (error) {
@@ -33,17 +30,14 @@ function Users() {
   };
 
   const handleDelete = async (userId, username) => {
-    if (userId === currentUser?.id) {
+    if (userId === (currentUser?._id || currentUser?.id)) {
       alert('Bạn không thể xóa chính mình!');
       return;
     }
 
     if (window.confirm(`Bạn có chắc chắn muốn xóa user "${username}"?`)) {
       try {
-        const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:5001/api/auth/users/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        await api.delete(`/auth/users/${userId}`);
         alert('Xóa user thành công!');
         fetchUsers();
       } catch (error) {
@@ -82,7 +76,7 @@ function Users() {
               <tr key={user._id}>
                 <td>
                   <strong>{user.username}</strong>
-                  {user._id === currentUser?.id && (
+                  {user._id === (currentUser?._id || currentUser?.id) && (
                     <span style={{ 
                       marginLeft: '8px', 
                       padding: '2px 6px', 
@@ -104,7 +98,7 @@ function Users() {
                 </td>
                 <td>{new Date(user.createdAt).toLocaleDateString('vi-VN')}</td>
                 <td>
-                  {user._id !== currentUser?.id ? (
+                  {user._id !== (currentUser?._id || currentUser?.id) ? (
                     <button 
                       className="btn btn-danger" 
                       onClick={() => handleDelete(user._id, user.username)}

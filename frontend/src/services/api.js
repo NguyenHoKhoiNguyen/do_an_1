@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5001/api';
+export const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -58,6 +58,35 @@ export const matchesAPI = {
   delete: (id) => api.delete(`/matches/${id}`),
   search: (params) => api.get('/matches/search', { params }),
   getStats: (params) => api.get('/matches/stats', { params }),
+};
+
+// News API
+export const newsAPI = {
+  getNews: (page = 1) => api.get('/news', { params: { page } }),
+  searchNews: (query, page = 1) => api.get(`/news/search/${encodeURIComponent(query)}`, { params: { page } }),
+  getHeadlines: (page = 1) => api.get('/news/headlines', { params: { page } }),
+};
+
+// Standings API
+export const standingsAPI = {
+  getStandings: () => api.get('/standings'),
+  getTeamStanding: (teamId) => api.get(`/standings/team/${teamId}`),
+  getSOS: (teamId) => api.get(`/standings/sos/${teamId}`),
+};
+
+// Export API
+export const exportAPI = {
+  exportStandingsPDF: () => api.get('/export/standings', { responseType: 'blob' }),
+  exportTeamsPDF: () => api.get('/export/teams', { responseType: 'blob' }),
+  exportPlayersPDF: () => api.get('/export/players', { responseType: 'blob' }),
+  exportMatchesPDF: () => api.get('/export/matches', { responseType: 'blob' }),
+};
+
+// AI API
+export const aiAPI = {
+  getHistory: () => api.get('/ai/chat/history'),
+  sendMessage: (message) => api.post('/ai/chat', { message }),
+  clearHistory: () => api.delete('/ai/chat/clear'),
 };
 
 export default api;

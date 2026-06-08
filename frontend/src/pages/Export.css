@@ -1,0 +1,253 @@
+.export-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.export-header {
+  text-align: center;
+  margin-bottom: 50px;
+  color: white;
+}
+
+.export-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 10px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Message */
+.message {
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+}
+
+.message.success {
+  background: #d5f4e6;
+  color: #27ae60;
+  border-left: 4px solid #27ae60;
+}
+
+.message.error {
+  background: #fadbd8;
+  color: #c0392b;
+  border-left: 4px solid #c0392b;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Export Grid */
+.export-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 50px;
+}
+
+.export-card {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.export-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.card-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.card-description {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.btn-export {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.btn-export:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-export:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Info Section */
+.export-info {
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+  margin-bottom: 30px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.export-info h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin: 0 0 30px 0;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 25px;
+}
+
+.info-item {
+  display: flex;
+  gap: 15px;
+}
+
+.info-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.info-content h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.info-content p {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Tips Section */
+.export-tips {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.export-tips h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin: 0 0 25px 0;
+}
+
+.export-tips ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.export-tips li {
+  padding: 12px 0 12px 40px;
+  position: relative;
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.export-tips li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #27ae60;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .export-container {
+    padding: 30px 15px;
+  }
+
+  .export-header h1 {
+    font-size: 2rem;
+  }
+
+  .export-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .export-card {
+    padding: 25px;
+  }
+
+  .export-info,
+  .export-tips {
+    padding: 25px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .export-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .export-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-icon {
+    font-size: 2.5rem;
+  }
+
+  .export-tips li {
+    font-size: 0.9rem;
+    padding: 10px 0 10px 35px;
+  }
+}
